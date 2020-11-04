@@ -1,0 +1,25 @@
+2
+6 2 15
+S0 S T U A B
+a b
+S0 => &
+S0 => A T
+S0 => B U
+S0 => S S
+S0 => A B
+S0 => B A
+S => A T
+S => B U
+S => S S
+S => A B
+S => B A
+T => S B
+U => S A
+A => a
+B => b
+3 2 3
+S1 A B
+0 1
+S1 => AB
+A => 0
+B => 1
