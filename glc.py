@@ -52,21 +52,25 @@ for linha in arquivo_gramatica:
     
     primeira_linha = False
 '''
-
-def verificar_cadeia(cadeia_resposta, gramatica, cadeia_atual):
+def verificar_cadeia(cadeia_resposta, gramatica, cadeia_atual, numero_de_chamadas):
+ 
     vetor_cadeia_resposta = list(cadeia_resposta)
     vetor_cadeia_atual = list(cadeia_atual)
     cadeia_finalizada = True
-
+    if len(cadeia_atual) > len(cadeia_resposta):
+        return
 
     for i in vetor_cadeia_atual:
         if i in gramatica['variaveis']:
             cadeia_finalizada = False
             break
     if cadeia_finalizada:
+        if len(cadeia_atual) == 0 and cadeia_resposta == '&':
+            print('Deu bom')
+            return 1
         if cadeia_atual == cadeia_resposta:
             print("Deu bom")
-            return
+            return 1
     
 
     if len(vetor_cadeia_atual) > 0:
@@ -85,7 +89,9 @@ def verificar_cadeia(cadeia_resposta, gramatica, cadeia_atual):
                                 cadeia_nova = ''.join(vetor_cadeia_atual_novo)
 
                                 try:
-                                    verificar_cadeia(cadeia_resposta, gramatica, cadeia_nova)
+                                    resposta = verificar_cadeia(cadeia_resposta, gramatica, cadeia_nova, numero_de_chamadas + 1)
+                                    if resposta == 1:
+                                        return 1
                                 except:
                                     print('bugou')
                                     return
@@ -95,29 +101,41 @@ def verificar_cadeia(cadeia_resposta, gramatica, cadeia_atual):
                                 if len(vetor_cadeia_atual) == 0:
                                     if cadeia_resposta == '&':
                                         print('Deu bom')
-                                        return
+                                        return 1
                                 else :
                                     cadeia_nova = ''.join(vetor_cadeia_atual_novo)
                                     try:
-                                        verificar_cadeia(cadeia_resposta, gramatica, cadeia_nova)
+                                        resposta = verificar_cadeia(cadeia_resposta, gramatica, cadeia_nova, numero_de_chamadas + 1)
+                                        if resposta == 1:
+                                            return 1
                                     except:
                                         print('bugou ')
-                                        return   
+                                        return
 
 
-
-
-verificar_cadeia('001', {
-        'numero_de_variaveis': 3, 
+verificar_cadeia('abaabb', {
+        'numero_de_variaveis': 6, 
         'numero_de_terminais': 2, 
-        'numero_de_regras': 3, 
+        'numero_de_regras': 15, 
         'regras': [
+            ['Z', '=>', '&'], 
+            ['Z', '=>', 'AT'], 
+            ['Z', '=>', 'BU'], 
+            ['Z', '=>', 'SS'], 
             ['Z', '=>', 'AB'], 
-            ['A', '=>', '0'], 
-            ['B', '=>', '1']], 
-            'variaveis': ['Z', 'A', 'B'], 
-            'terminais': ['0', '1']
-    }, 'Z' )
+            ['Z', '=>', 'BA'], 
+            ['S', '=>', 'AT'], 
+            ['S', '=>', 'BU'], 
+            ['S', '=>', 'SS'], 
+            ['S', '=>', 'AB'], 
+            ['S', '=>', 'BA'], 
+            ['T', '=>', 'SB'], 
+            ['U', '=>', 'SA'], 
+            ['A', '=>', 'a'], 
+            ['B', '=>', 'b']], 
+        'variaveis': ['Z', 'S', 'T', 'U', 'A', 'B'], 
+        'terminais': ['a', 'b']
+    }, 'Z', 1 )
 
 
 '''
@@ -129,22 +147,23 @@ print(gramaticas)
         'numero_de_regras': 15, 
         'regras': [
             ['S0', '=>', '&'], 
-            ['S0', '=>', 'A', 'T'], 
-            ['S0', '=>', 'B', 'U'], 
-            ['S0', '=>', 'S', 'S'], 
-            ['S0', '=>', 'A', 'B'], 
-            ['S0', '=>', 'B', 'A'], 
-            ['S', '=>', 'A', 'T'], 
-            ['S', '=>', 'B', 'U'], 
-            ['S', '=>', 'S', 'S'], 
-            ['S', '=>', 'A', 'B'], 
-            ['S', '=>', 'B', 'A'], 
-            ['T', '=>', 'S', 'B'], 
-            ['U', '=>', 'S', 'A'], 
+            ['S0', '=>', 'AT'], 
+            ['S0', '=>', 'BU'], 
+            ['S0', '=>', 'SS'], 
+            ['S0', '=>', 'AB'], 
+            ['S0', '=>', 'BA'], 
+            ['S', '=>', 'AT'], 
+            ['S', '=>', 'BU'], 
+            ['S', '=>', 'SS'], 
+            ['S', '=>', 'AB'], 
+            ['S', '=>', 'BA'], 
+            ['T', '=>', 'SB'], 
+            ['U', '=>', 'SA'], 
             ['A', '=>', 'a'], 
             ['B', '=>', 'b']], 
         'variaveis': ['S0', 'S', 'T', 'U', 'A', 'B'], 
-        'terminais': ['a', 'b']}, 
+        'terminais': ['a', 'b']
+    }, 
     {
         'numero_de_variaveis': 3, 
         'numero_de_terminais': 2, 
