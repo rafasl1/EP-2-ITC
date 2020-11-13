@@ -43,7 +43,6 @@ for linha in arquivo_gramatica:
         index += 1
 
     elif index >= 3 and index <= 2 + gramaticas[index_da_gramatica_lida]['numero_de_regras'] :
-
         gramaticas[index_da_gramatica_lida]['regras'].append(linha.split())
 
         preenchimento_inicial = True
@@ -52,67 +51,54 @@ for linha in arquivo_gramatica:
     
     primeira_linha = False
 '''
-def verificar_cadeia(cadeia_resposta, gramatica, cadeia_atual, numero_de_chamadas):
- 
-    vetor_cadeia_resposta = list(cadeia_resposta)
-    vetor_cadeia_atual = list(cadeia_atual)
-    cadeia_finalizada = True
-    if len(cadeia_atual) > len(cadeia_resposta):
-        return
 
-    for i in vetor_cadeia_atual:
-        if i in gramatica['variaveis']:
-            cadeia_finalizada = False
-            break
-    if cadeia_finalizada:
-        if len(cadeia_atual) == 0 and cadeia_resposta == '&':
-            print('Deu bom')
-            return 1
-        if cadeia_atual == cadeia_resposta:
-            print("Deu bom")
-            return 1
+def crie_matriz(n_linhas, n_colunas, valor):
+        matriz = []
+
+        for i in range(n_linhas):
+            linha = []
+
+            for j in range(n_colunas):
+                linha.append(valor)
+
+            matriz.append(linha)
+
+        return matriz
+
+def verificar_cadeia(cadeia_resposta_, gramatica):
+    cadeia_resposta = '*' + cadeia_resposta_
+    variavel_inicial = gramatica['variaveis'][0]
+    regras_especiais = [] # Regras no formato A => BC
+
+    for regra in gramatica['regras']:
+        if len(regra[2]) == 2:
+            regras_especiais.append(regra)
+
+    if cadeia_resposta_ == '&':
+        for regra in gramatica['regras']:
+            if regra[0] == variavel_inicial and regra[2] == '&':
+                print('foi')
+                return True
+
+    matriz = crie_matriz(len(cadeia_resposta_) + 1, len(cadeia_resposta_) + 1, '')
+
+    for i in range(1, len(cadeia_resposta)):
+        for A in gramatica['variaveis']:
+            if [A, '=>', cadeia_resposta[i]] in gramatica['regras']:
+                matriz[i][i] += A + ' '
+
     
-
-    if len(vetor_cadeia_atual) > 0:
-        for index, i in enumerate(cadeia_atual):
-            if i in gramatica['terminais']:
-                pass
-            else:
-                for j in gramatica['regras']:
-
-                    if i == j[0]:
-                        vetor_de_substituicoes = j[2:]
-                        for k in vetor_de_substituicoes:
-                            if k != '&':
-                                vetor_cadeia_atual_novo =  vetor_cadeia_atual.copy()
-                                vetor_cadeia_atual_novo[index] = k
-                                cadeia_nova = ''.join(vetor_cadeia_atual_novo)
-
-                                try:
-                                    resposta = verificar_cadeia(cadeia_resposta, gramatica, cadeia_nova, numero_de_chamadas + 1)
-                                    if resposta == 1:
-                                        return 1
-                                except:
-                                    print('bugou')
-                                    return
-                            else:
-                                vetor_cadeia_atual_novo =  vetor_cadeia_atual.copy()
-                                vetor_cadeia_atual_novo.pop(index)
-                                if len(vetor_cadeia_atual) == 0:
-                                    if cadeia_resposta == '&':
-                                        print('Deu bom')
-                                        return 1
-                                else :
-                                    cadeia_nova = ''.join(vetor_cadeia_atual_novo)
-                                    try:
-                                        resposta = verificar_cadeia(cadeia_resposta, gramatica, cadeia_nova, numero_de_chamadas + 1)
-                                        if resposta == 1:
-                                            return 1
-                                    except:
-                                        print('bugou ')
-                                        return
+    for l in range(2, len(cadeia_resposta)):
+        for i in range(1, len(cadeia_resposta) - l + 1):
+            j = i + l - 1
+            for k in range(i, j - 1 + 1):
+                for regra in regras_especiais:
+                    matriz_copia = matriz.copy()
+                    if regra[2][0] in matriz_copia[i][k].split(' ') and regra[2][1] in matriz_copia[k + 1][j].split(' '):
+                        matriz[i][j] += regra[0] + ' '
 
 
+    print(matriz[6][6])
 verificar_cadeia('abaabb', {
         'numero_de_variaveis': 6, 
         'numero_de_terminais': 2, 
@@ -135,8 +121,7 @@ verificar_cadeia('abaabb', {
             ['B', '=>', 'b']], 
         'variaveis': ['Z', 'S', 'T', 'U', 'A', 'B'], 
         'terminais': ['a', 'b']
-    }, 'Z', 1 )
-
+    })
 
 '''
 print(gramaticas)
