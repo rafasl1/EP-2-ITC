@@ -1,3 +1,4 @@
+# Gustavo Camara Reis(11207780) e Rafael Silva de Lima(11295790)
 arquivo_gramatica = open("inp-glc.txt", 'r')
 arquivo_cadeias = open("inp-cadeias.txt", 'r')
 string_de_saida = ''
@@ -10,14 +11,14 @@ index_da_gramatica_lida = 0
 preenchimento_inicial = False
 
 for linha in arquivo_gramatica:
-	# condição para verificar se todas as informações da gramatica já foram gravadas em variaveis
+	# condicao para verificar se todas as informcçoes da gramatica ja foram gravadas em variaveis
     if  preenchimento_inicial and index > 2 + gramaticas[index_da_gramatica_lida]['numero_de_regras']:
-        # atribuição de valores para indicar que uma gramatica foi lida completamente e resetar o index do loop
+        # atribuicao de valores para indicar que uma gramatica foi lida completamente e resetar o index do loop
         index = 0
         index_da_gramatica_lida += 1
         preenchimento_inicial = False
     
-	# verificar se a linha que está sendo lida é a primeira do arquivo
+	# verificar se a linha que está sendo lida eh a primeira do arquivo
     if index == 0 and primeira_linha: 
 
         numero_de_gramaticas = int(linha)
@@ -26,10 +27,10 @@ for linha in arquivo_gramatica:
         for i in range(int(numero_de_gramaticas)):
             gramaticas.append({})
 
-	# verificar se está sendo lida a primeira linha de configuração da gramtatica
+	# verificar se esta sendo lida a primeira linha de configuracao da gramtatica
     elif index == 0 and primeira_linha == False:
         
-		# preenchimento das configurações de cada gramatica
+		# preenchimento das configuracoes de cada gramatica
         parametros = linha.split()
         gramaticas[index_da_gramatica_lida]['numero_de_variaveis'] = int(parametros[0])
         gramaticas[index_da_gramatica_lida]['numero_de_terminais'] = int(parametros[1])
@@ -38,19 +39,19 @@ for linha in arquivo_gramatica:
 
         index += 1
 
-	# verifica se a linha é a primeira lida depois do preenchimento de configurações iniciais
+	# verifica se a linha eh a primeira lida depois do preenchimento de configuracoes iniciais
     elif index == 1 and primeira_linha == False:
     
         gramaticas[index_da_gramatica_lida]['variaveis'] = linha.split()
         index += 1
 
-	# verifica se a linha lida é a proxima apos ter preenchido a configuração de variaveis
+	# verifica se a linha lida eh a proxima apos ter preenchido a configuracao de variaveis
     elif index == 2 and primeira_linha == False:
     
         gramaticas[index_da_gramatica_lida]['terminais'] = linha.split()
         index += 1
 
-	# verifica se a linha lida é a proxima apos ter preenchido a configuração de terminais
+	# verifica se a linha lida eh a proxima apos ter preenchido a configuracao de terminais
     elif index >= 3 and index <= 2 + gramaticas[index_da_gramatica_lida]['numero_de_regras'] :
         # une todos os elementos finais de uma transicao em uma unica string e preenche a configuracao de regras
         final_regra = linha.split()[2:]
@@ -62,7 +63,7 @@ for linha in arquivo_gramatica:
         preenchimento_inicial = True
         index += 1
         
-	# indica para o loop que não é a primeira linha que está sendo lida da gramatica
+	# indica para o loop que não eh a primeira linha que esta sendo lida da gramatica
     primeira_linha = False
 
 
@@ -76,7 +77,7 @@ numero_de_cadeias = 0
 primeira_leitura = True
 
 for linha in arquivo_cadeias:
-	# condição para verificar se todas as informações das cadeias de cada gramatica já foram gravadas
+	# condicao para verificar se todas as informacoes das cadeias de cada gramatica já foram gravadas
     if preenchimento_inicial and index >= numero_de_cadeias:
         index = 0
         primeira_linha = True
@@ -116,7 +117,7 @@ def crie_matriz(n_linhas, n_colunas, valor):
 
 # funcao para implementar o algoritmo de CYK
 def verificar_cadeia(cadeia_resposta_, gramatica):
-    # adiciona um elemento na string para que possa ser usado os mesmos index do que o código passado em aula
+    # adiciona um elemento na string para que possa ser usado os mesmos index do que o codigo passado em aula
     cadeia_resposta = '*' + cadeia_resposta_
     variavel_inicial = gramatica['variaveis'][0]
     regras_especiais = [] # Regras no formato A => BC
